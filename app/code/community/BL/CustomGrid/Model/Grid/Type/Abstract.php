@@ -327,6 +327,10 @@ abstract class BL_CustomGrid_Model_Grid_Type_Abstract extends Varien_Object
                 'response'   => $response,
                 'type_model' => $this,
             ));
+
+            $filterCallback = function($m) {
+                return ($m instanceof BL_CustomGrid_Model_Custom_Column_Abstract); 
+            };
             
             $this->_customColumns = array_filter(
                 array_merge(
@@ -334,7 +338,7 @@ abstract class BL_CustomGrid_Model_Grid_Type_Abstract extends Varien_Object
                     $xmlColumns,
                     $response->getColumns()
                 ),
-                create_function('$m', 'return ($m instanceof BL_CustomGrid_Model_Custom_Column_Abstract);')
+                $filterCallback
             );
             
             uasort($this->_customColumns, array($this, '_sortCustomColumns'));
