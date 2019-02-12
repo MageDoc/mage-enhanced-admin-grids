@@ -33,20 +33,18 @@ class BL_CustomGrid_Helper_Data extends Mage_Core_Helper_Abstract
     public function parseCsvIntArray($string, $unique=true, $sorted=false, $min=null, $max=null)
     {
         $values = array_map(array($this, '_parseIntValue'), explode(',', $string));
-        $filterCodes = array('!is_null($v)');
         
         if ($unique) {
             $values = array_unique($values);
         }
-        if (!is_null($min)) {
-            $filterCodes[] = '($v >= '.intval($min).')';
-        }
-        if (!is_null($max)) {
-            $filterCodes[] = '($v <= '.intval($max).')';
-        }
-        
-        $filterCode = 'return ('.implode(' && ', $filterCodes).');';
-        $values = array_filter($values, create_function('$v', $filterCode));
+
+        $_filterCsvInt = function($v) use ($min, $max) {
+            return !is_null($v)
+            && (is_null($min) || $v >= intval($min))
+            && (is_null($max) || $v <= intval($max));
+        };
+
+        $values = array_filter($values, $_filterCsvInt);
         
         if ($sorted) {
             sort($values, SORT_NUMERIC);

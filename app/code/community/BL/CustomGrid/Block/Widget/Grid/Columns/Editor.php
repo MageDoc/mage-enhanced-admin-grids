@@ -68,7 +68,7 @@ class BL_CustomGrid_Block_Widget_Grid_Columns_Editor
         return Mage::helper('core')->jsonEncode($config);
     }
     
-    protected function _getBlockSortedColumns($block)
+    protected function _getBlockSortedColumns($block, $sorted = true)
     {
         // Get block columns, sort them if needed
         $columns = $block->getColumns();
