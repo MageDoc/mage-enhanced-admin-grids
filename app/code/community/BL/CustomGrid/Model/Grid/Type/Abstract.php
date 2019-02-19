@@ -1182,8 +1182,12 @@ abstract class BL_CustomGrid_Model_Grid_Type_Abstract extends Varien_Object
             'values'     => $request->getParam($valuesKey, array()),
             'global'     => array_diff_key($request->getParams(), array_flip(array($idsKey, $additionalKey, $valuesKey))),
         );
+
+        $mapCallback = function($a){
+            return (is_array($a) ? $a : array());
+        };
         
-        return array_map(create_function('$a', 'return (is_array($a) ? $a : array());'), $params);
+        return array_map($mapCallback, $params);
     }
     
     /**

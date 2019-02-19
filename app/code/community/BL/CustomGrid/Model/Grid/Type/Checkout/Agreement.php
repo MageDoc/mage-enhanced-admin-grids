@@ -109,7 +109,10 @@ class BL_CustomGrid_Model_Grid_Type_Checkout_Agreement
         $config = parent::_prepareEditableFieldCommonConfig($type, $id, $config);
         
         if (($config['type'] == 'editor') && isset($config['layout_handles'])) {
-            array_filter($config['layout_handles'], create_function('$a', 'return ($a != \'custom_grid_editor_handle_editor\');'));
+            $filterCallback = function($a){
+                return ($a != 'custom_grid_editor_handle_editor');
+            };
+            array_filter($config['layout_handles'], $filterCallback);
         }
         
         return $config;
